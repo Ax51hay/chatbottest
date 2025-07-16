@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, jsonify
 from web_bot import get_name, mood_matching, handle_confirmation
 import datetime
 import csv
+import nltk
 
 app = Flask(__name__)
 
