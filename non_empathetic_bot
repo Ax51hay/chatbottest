@@ -1,0 +1,15 @@
+def main():
+    print("------------------------------------------------------------CHATBOT STARTED------------------------------------------------------------")
+    print("Bot: What is your name?")
+    input("You: ")
+    print("Bot: How are you feeling today?")
+    input("You: ")
+    print("Bot: Why are you feeling like that?")
+    input("You: ")
+    print("Bot: What have you done to improve or maintain your mood?")
+    input("You: ")
+    print("Bot: Ok, thanks.")
+    print("------------------------------------------------------------CHATBOT ENDED--------------------------------------------------------------")
+
+if __name__ == "__main__":
+    main()
