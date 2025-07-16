@@ -2,3 +2,4 @@ flask
 nltk
 scikit-learn
 textblob
+gunicorn
