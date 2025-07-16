@@ -1,8 +1,9 @@
+# app.py
+
 from flask import Flask, render_template, request, jsonify
-from web_bot import get_name, mood_matching, handle_confirmation
+from web_bot import mood_matching
 import datetime
 import csv
-import nltk
 
 app = Flask(__name__)
 
@@ -14,7 +15,7 @@ def home():
 def chat():
     user_input = request.json["message"]
     mood = mood_matching(user_input)
-    
+
     if mood == "happy":
         response = "I'm glad to hear you're feeling good today!"
     elif mood == "sad":
