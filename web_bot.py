@@ -7,8 +7,6 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from scipy.spatial.distance import cosine
 import warnings
 
-nltk.download('punkt')
-nltk.download('words')
 nltk.data.path.append('./nltk_data')  # if you bundle nltk_data
 
 warnings.filterwarnings("ignore", category=RuntimeWarning)
