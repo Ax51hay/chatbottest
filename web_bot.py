@@ -9,6 +9,10 @@ from nltk.corpus import words
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from scipy.spatial.distance import cosine
 
+# Downloads
+nltk.download('punkt')
+nltk.download('words')
+
 # Suppress warnings for cosine divide-by-zero
 warnings.filterwarnings("ignore", category=RuntimeWarning, message="invalid value encountered in scalar divide")
 
