@@ -1,3 +1,5 @@
+import os
+os.environ["NLTK_DATA"] = os.path.join(os.path.dirname(__file__), "nltk_data")
 import nltk
 import re
 import numpy as np
@@ -6,8 +8,6 @@ from nltk.corpus import words
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from scipy.spatial.distance import cosine
 import warnings
-import os
-os.environ["NLTK_DATA"] = os.path.join(os.path.dirname(__file__), "nltk_data")
 
 warnings.filterwarnings("ignore", category=RuntimeWarning)
 
