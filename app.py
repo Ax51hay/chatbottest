@@ -124,9 +124,9 @@ def chat():
         else:
             response = "I'm not sure I understand — could you try expressing how you feel again?"
 
-        return render_template("chat.html", name=name, message=message, response=response)
+        return render_template("index.html", name=name, message=message, response=response)
 
-    return render_template("chat.html")
+    return render_template("index.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
