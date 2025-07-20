@@ -1,143 +1,170 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Chatbot</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f5f7fa;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .chat-container {
-            width: 400px;
-            max-width: 100%;
-            height: 600px;
-            background: #fff;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.15);
-            display: flex;
-            flex-direction: column;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        .chat-header {
-            padding: 15px;
-            background: #007bff;
-            color: white;
-            font-weight: 700;
-            text-align: center;
-            font-size: 1.2rem;
-        }
-        .chat-messages {
-            flex-grow: 1;
-            padding: 15px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            background: #e9ecef;
-        }
-        .message {
-            max-width: 75%;
-            padding: 10px 15px;
-            border-radius: 20px;
-            line-height: 1.3;
-            word-wrap: break-word;
-        }
-        .bot-message {
-            background: #fff;
-            color: #333;
-            align-self: flex-start;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-        }
-        .user-message {
-            background: #007bff;
-            color: white;
-            align-self: flex-end;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-        }
-        form {
-            display: flex;
-            padding: 15px;
-            background: #fff;
-            border-top: 1px solid #ddd;
-        }
-        input[type="text"] {
-            flex-grow: 1;
-            padding: 10px 15px;
-            border: 1px solid #ccc;
-            border-radius: 20px;
-            font-size: 1rem;
-            outline: none;
-            transition: border-color 0.3s;
-        }
-        input[type="text"]:focus {
-            border-color: #007bff;
-        }
-        button {
-            background: #007bff;
-            color: white;
-            border: none;
-            padding: 0 20px;
-            margin-left: 10px;
-            border-radius: 20px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        button:hover {
-            background: #0056b3;
-        }
-        /* Scrollbar styling */
-        .chat-messages::-webkit-scrollbar {
-            width: 6px;
-        }
-        .chat-messages::-webkit-scrollbar-thumb {
-            background: #007bff;
-            border-radius: 3px;
-        }
-        .chat-messages::-webkit-scrollbar-track {
-            background: #e9ecef;
-        }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Chatbot</title>
+<style>
+  html, body {
+    height: 100%;
+    margin: 0;
+    background: #f5f7fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  .chat-container {
+    width: 90%;
+    max-width: 600px;
+    height: 90vh;
+    max-height: 900px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .chat-header {
+    padding: 20px;
+    background: #007bff;
+    color: white;
+    font-weight: 700;
+    font-size: 1.4rem;
+    text-align: center;
+    user-select: none;
+  }
+  .chat-messages {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    background: #e9ecef;
+  }
+  .message {
+    max-width: 75%;
+    padding: 14px 20px;
+    border-radius: 20px;
+    line-height: 1.4;
+    word-wrap: break-word;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.1);
+    font-size: 1rem;
+  }
+  .bot-message {
+    background: white;
+    color: #222;
+    align-self: flex-start;
+  }
+  .user-message {
+    background: #007bff;
+    color: white;
+    align-self: flex-end;
+  }
+  form {
+    display: flex;
+    padding: 20px;
+    background: white;
+    border-top: 1px solid #ddd;
+    gap: 12px;
+  }
+  input[type="text"] {
+    flex-grow: 1;
+    padding: 14px 18px;
+    font-size: 1rem;
+    border-radius: 20px;
+    border: 1.5px solid #ccc;
+    outline: none;
+    transition: border-color 0.3s ease;
+  }
+  input[type="text"]:focus {
+    border-color: #007bff;
+  }
+  button {
+    background: #007bff;
+    border: none;
+    padding: 0 28px;
+    border-radius: 20px;
+    color: white;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+  }
+  button:hover {
+    background: #0056b3;
+  }
+  /* Scrollbar styling for better UX */
+  .chat-messages::-webkit-scrollbar {
+    width: 8px;
+  }
+  .chat-messages::-webkit-scrollbar-thumb {
+    background: #007bff;
+    border-radius: 4px;
+  }
+  .chat-messages::-webkit-scrollbar-track {
+    background: #e9ecef;
+  }
+  @media (max-width: 480px) {
+    .chat-container {
+      height: 95vh;
+      padding: 0;
+    }
+    .chat-header {
+      padding: 15px;
+      font-size: 1.2rem;
+    }
+    form {
+      padding: 15px;
+    }
+    input[type="text"] {
+      font-size: 0.95rem;
+      padding: 12px 15px;
+    }
+    button {
+      padding: 0 18px;
+      font-size: 0.95rem;
+    }
+  }
+</style>
 </head>
 <body>
-    <div class="chat-container">
-        <div class="chat-header">
-            Chatbot
+  <div class="chat-container">
+    <div class="chat-header">Chatbot</div>
+    <div class="chat-messages" id="chat-messages">
+      {% if name %}
+        <div class="bot-message message">
+          Hello {{ name }}! How are you feeling today?
         </div>
-        <div class="chat-messages" id="chat-messages">
-            {% if name %}
-                <div class="bot-message message">
-                    Hello {{ name }}! How are you feeling today?
-                </div>
-            {% endif %}
-            {% if message %}
-                <div class="user-message message">{{ message }}</div>
-            {% endif %}
-            {% if response %}
-                <div class="bot-message message">{{ response }}</div>
-            {% endif %}
-        </div>
-        <form method="POST" action="/">
-            {% if not name %}
-                <input type="text" name="name" placeholder="Enter your name" autocomplete="off" required />
-            {% else %}
-                <input type="hidden" name="name" value="{{ name }}" />
-            {% endif %}
-            <input type="text" name="message" placeholder="Type your message..." autocomplete="off" required autofocus />
-            <button type="submit">Send</button>
-        </form>
+      {% endif %}
+      {% if message %}
+        <div class="user-message message">{{ message }}</div>
+      {% endif %}
+      {% if response %}
+        <div class="bot-message message">{{ response }}</div>
+      {% endif %}
     </div>
-    <script>
-        // Scroll chat to bottom on load
-        const chatMessages = document.getElementById('chat-messages');
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    </script>
+    <form method="POST" action="/">
+      {% if not name %}
+        <input type="text" name="name" placeholder="Enter your name" autocomplete="off" required />
+      {% else %}
+        <input type="hidden" name="name" value="{{ name }}" />
+      {% endif %}
+      <input type="text" name="message" placeholder="Type your message..." autocomplete="off" required autofocus />
+      <button type="submit">Send</button>
+    </form>
+  </div>
+
+  <script>
+    // Scroll chat to bottom on load and after new message
+    const chatMessages = document.getElementById('chat-messages');
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  </script>
 </body>
 </html>
