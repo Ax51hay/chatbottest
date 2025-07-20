@@ -22,7 +22,6 @@
     width: 90%;
     max-width: 600px;
     height: 90vh;
-    max-height: 900px;
     background: white;
     border-radius: 12px;
     box-shadow: 0 4px 16px rgba(0,0,0,0.2);
@@ -100,7 +99,6 @@
   button:hover {
     background: #0056b3;
   }
-  /* Scrollbar styling for better UX */
   .chat-messages::-webkit-scrollbar {
     width: 8px;
   }
@@ -111,27 +109,6 @@
   .chat-messages::-webkit-scrollbar-track {
     background: #e9ecef;
   }
-  @media (max-width: 480px) {
-    .chat-container {
-      height: 95vh;
-      padding: 0;
-    }
-    .chat-header {
-      padding: 15px;
-      font-size: 1.2rem;
-    }
-    form {
-      padding: 15px;
-    }
-    input[type="text"] {
-      font-size: 0.95rem;
-      padding: 12px 15px;
-    }
-    button {
-      padding: 0 18px;
-      font-size: 0.95rem;
-    }
-  }
 </style>
 </head>
 <body>
@@ -139,40 +116,23 @@
     <div class="chat-header">Chatbot</div>
     <div class="chat-messages" id="chat-messages">
       {% if step == 1 %}
-    <div class="bot-message message">
-        {{ prompt }}
-    </div>
-    {% elif step == 2 %}
-    <div class="bot-message message">
-        {{ response }}
-    </div>
-    {% elif step == 3 %}
-    <div class="bot-message message">
-        {{ response }}
-    </div>
-    {% endif %}
-
-
-      {% if chat_history %}
-        {% for chat in chat_history %}
-          <div class="user-message message">{{ chat.user }}</div>
-          <div class="bot-message message">{{ chat.bot }}</div>
-        {% endfor %}
-      {% elif name and not chat_history %}
-        <div class="bot-message message">
-          Hello {{ name }}! How are you feeling today?
-        </div>
+        <div class="bot-message message">Hi! What's your name?</div>
+      {% elif step == 2 %}
+        <div class="bot-message message">Hello {{ name }}! How are you feeling today?</div>
+      {% elif step == 3 %}
+        <div class="user-message message">{{ message }}</div>
+        <div class="bot-message message">{{ response }}</div>
       {% endif %}
     </div>
 
     <form method="POST" action="/">
-      {% if ask_name %}
+      {% if step == 1 %}
         <input type="text" name="name" placeholder="Enter your name" autocomplete="off" required />
       {% else %}
         <input type="hidden" name="name" value="{{ name }}" />
         <input type="text" name="message" placeholder="Type your message..." autocomplete="off" required autofocus />
       {% endif %}
-      <button type="submit">{% if ask_name %}Submit{% else %}Send{% endif %}</button>
+      <button type="submit">{% if step == 1 %}Submit{% else %}Send{% endif %}</button>
     </form>
   </div>
 
