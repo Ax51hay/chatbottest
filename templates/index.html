@@ -1,32 +1,26 @@
 <!-- templates/index.html -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Mood Chatbot</title>
+    <meta charset="UTF-8">
+    <title>Emotion Chatbot</title>
 </head>
 <body>
-    <h1>Chatbot</h1>
-    <div id="chat-box"></div>
-    <input type="text" id="user-input" placeholder="Type your message...">
-    <button onclick="sendMessage()">Send</button>
+    <h1>Emotion Chatbot</h1>
+    <form method="post">
+        <label>Your Name:</label><br>
+        <input type="text" name="name" required><br><br>
 
-    <script>
-        function sendMessage() {
-            const input = document.getElementById("user-input");
-            const message = input.value;
-            fetch("/chat", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ message: message })
-            })
-            .then(response => response.json())
-            .then(data => {
-                const box = document.getElementById("chat-box");
-                box.innerHTML += `<p><b>You:</b> ${message}</p>`;
-                box.innerHTML += `<p><b>Bot:</b> ${data.response}</p>`;
-                input.value = "";
-            });
-        }
-    </script>
+        <label>How are you feeling today?</label><br>
+        <textarea name="message" rows="4" cols="50" required></textarea><br><br>
+
+        <button type="submit">Send</button>
+    </form>
+
+    {% if response %}
+        <hr>
+        <p><strong>{{ name }}:</strong> {{ message }}</p>
+        <p><strong>Bot:</strong> {{ response }}</p>
+    {% endif %}
 </body>
 </html>
