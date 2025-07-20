@@ -71,10 +71,12 @@ def mood_matching(user_input):
 # Web route
 @app.route("/", methods=["GET", "POST"])
 def chat():
-    if "history" not in session:
+    if request.method == "GET":
+        session.clear()
         session["history"] = []
         session["step"] = 1
         session["name"] = ""
+
 
     if request.method == "POST":
         name_input = request.form.get("name", "").strip()
