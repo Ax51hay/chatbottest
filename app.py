@@ -110,7 +110,18 @@ def chat():
                 bot_msg = "Sad days happen to all of us, would you like to share what has been on your mind lately?"
             elif mood == "angry":
                 bot_msg = "If you don't mind sharing, what's been triggering these feelings today?"
-                
+
+            session["history"].append(("bot", bot_msg))
+            session["step"] = 3
+
+        elif session["step"] == 2 and message_input:
+            if mood == "happy":
+                bot_msg = "Wow! That's amazing!"
+            elif mood == "sad":
+                bot_msg = "Ah, I can imagine how that must make you feel"
+            elif mood == "angry":
+                bot_msg = "That sounds incredibly frustrating, I can see why it's caused your mood to worsen."
+
             session["history"].append(("bot", bot_msg))
             session["step"] = 3
 
