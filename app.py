@@ -9,6 +9,7 @@ import warnings
 app = Flask(__name__)
 app.secret_key = 'your-secret-key'  # Needed for session support
 warnings.filterwarnings("ignore", category=RuntimeWarning)
+mood = None
 
 # Mood dataset
 moods = {
@@ -71,6 +72,7 @@ def mood_matching(user_input):
 # Web route
 @app.route("/", methods=["GET", "POST"])
 def chat():
+    global mood
     if request.method == "GET":
         session.clear()
         session["history"] = []
@@ -100,6 +102,15 @@ def chat():
                 bot_msg = f"It's okay to feel angry, {session['name'].capitalize()}. Let's talk about it."
             else:
                 bot_msg = "I'm not sure I understand — could you try expressing how you feel again?"
+            session["history"].append(("bot", bot_msg))
+
+            if mood == "happy":
+                bot_msg = "Would you like to share what's brought on your good mood?"
+            elif mood == "sad":
+                bot_msg = "Sad days happen to all of us, would you like to share what has been on your mind lately?"
+            elif mood == "angry":
+                bot_msg = "If you don't mind sharing, what's been triggering these feelings today?"
+                
             session["history"].append(("bot", bot_msg))
             session["step"] = 3
 
