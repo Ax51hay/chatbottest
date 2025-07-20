@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from scipy.spatial.distance import cosine
 from nltk.stem.snowball import PorterStemmer
@@ -7,6 +7,7 @@ import re
 import warnings
 
 app = Flask(__name__)
+app.secret_key = 'your-secret-key'  # Needed for session support
 warnings.filterwarnings("ignore", category=RuntimeWarning)
 
 # Mood dataset
@@ -70,42 +71,37 @@ def mood_matching(user_input):
 # Web route
 @app.route("/", methods=["GET", "POST"])
 def chat():
-    name = None
-    message = None
-    response = None
-    prompt = "What's your name?"
-    step = 1
+    if "history" not in session:
+        session["history"] = []
+        session["step"] = 1
+        session["name"] = ""
 
     if request.method == "POST":
-        name = request.form.get("name", "").strip()
-        message = request.form.get("message", "").strip()
+        name_input = request.form.get("name", "").strip()
+        message_input = request.form.get("message", "").strip()
 
-        if name and not message:
-            response = f"Hi {name.capitalize()}, how are you feeling today?"
-            step = 2
-        elif name and message:
-            mood = mood_matching(message)
+        if session["step"] == 1 and name_input:
+            session["name"] = name_input
+            bot_msg = f"Hi {name_input.capitalize()}, how are you feeling today?"
+            session["history"].append(("user", name_input))
+            session["history"].append(("bot", bot_msg))
+            session["step"] = 2
+
+        elif session["step"] == 2 and message_input:
+            session["history"].append(("user", message_input))
+            mood = mood_matching(message_input)
             if mood == "happy":
-                response = f"I'm so glad to hear you're feeling happy today, {name.capitalize()}!"
+                bot_msg = f"I'm so glad to hear you're feeling happy today, {session['name'].capitalize()}!"
             elif mood == "sad":
-                response = f"I'm sorry to hear you're feeling sad, {name.capitalize()}. Maybe I can help."
+                bot_msg = f"I'm sorry to hear you're feeling sad, {session['name'].capitalize()}. Maybe I can help."
             elif mood == "angry":
-                response = f"It's okay to feel angry, {name.capitalize()}. Let's talk about it."
+                bot_msg = f"It's okay to feel angry, {session['name'].capitalize()}. Let's talk about it."
             else:
-                response = "I'm not sure I understand — could you try expressing how you feel again?"
-            step = 3
-        else:
-            prompt = "What's your name?"
-            step = 1
+                bot_msg = "I'm not sure I understand — could you try expressing how you feel again?"
+            session["history"].append(("bot", bot_msg))
+            session["step"] = 3
 
-    return render_template(
-    "index.html",
-    name=name,
-    message=message,
-    response=response,
-    step=step,
-    prompt=prompt
-)
+    return render_template("index.html", history=session["history"], step=session["step"], name=session["name"])
 
 if __name__ == "__main__":
     import os
