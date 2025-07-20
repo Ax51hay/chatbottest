@@ -65,66 +65,47 @@ def mood_matching(user_input):
 
 @app.route("/", methods=["GET", "POST"])
 def chat():
+    if "name" not in session:
+        # User has not set their name yet
+        if request.method == "POST":
+            name = request.form.get("name", "").strip().capitalize()
+            if name:
+                session["name"] = name
+                session["chat_history"] = []  # store chat messages here
+                return redirect(url_for("chat"))
+        # show name input form only
+        return render_template("index.html", ask_name=True)
+    
+    # If here, user has a name stored
     if request.method == "POST":
-        user_input = request.form["message"].strip()
-        chat_history = session.get("chat_history", [])
+        message = request.form.get("message", "").strip()
+        if not message:
+            # No message entered, just reload
+            return redirect(url_for("chat"))
+        
+        # run mood matching and generate response
+        mood = mood_matching(message)
+        name = session["name"]
 
-        # Step 0: Ask name if not set
-        if "name" not in session:
-            guessed_name = user_input.capitalize()
-            session["name"] = guessed_name
-            session["step"] = 1
-            chat_history.append(("user", user_input))
-            chat_history.append(("bot", f"I have understood your name to be {guessed_name}, is that correct? Please type Yes or No."))
+        if mood == "happy":
+            response = f"I'm so glad to hear you're feeling happy today, {name}!"
+        elif mood == "sad":
+            response = f"I'm sorry to hear you're feeling sad, {name}. Maybe I can help."
+        elif mood == "angry":
+            response = f"It's okay to feel angry, {name}. Let's talk about it."
+        else:
+            response = "I'm not sure I understand — could you try expressing how you feel again?"
 
-        elif session.get("step") == 1:
-            if "yes" in user_input.lower():
-                session["step"] = 2
-                chat_history.append(("user", user_input))
-                chat_history.append(("bot", f"Nice to meet you, {session['name']}! How are you feeling today?"))
-            elif "no" in user_input.lower():
-                chat_history.append(("user", user_input))
-                del session["name"]
-                session["step"] = 0
-                chat_history.append(("bot", "My apologies! Let's try again. What's your name?"))
-            else:
-                chat_history.append(("user", user_input))
-                chat_history.append(("bot", "Please respond with 'Yes' or 'No'."))
+        # Append conversation to session chat history
+        history = session.get("chat_history", [])
+        history.append({"user": message, "bot": response})
+        session["chat_history"] = history
 
-        elif session.get("step") == 2:
-            mood = mood_matching(user_input)
-            session["mood"] = mood
-            chat_history.append(("user", user_input))
-            if mood == "happy":
-                chat_history.append(("bot", f"I'm so glad to hear you're feeling happy today, {session['name']}!"))
-                chat_history.append(("bot", "Would you like to share what's brought on your good mood?"))
-            elif mood == "sad":
-                chat_history.append(("bot", f"I'm sorry to hear you're feeling down, {session['name']}. Maybe I can help."))
-                chat_history.append(("bot", "Would you like to share what's been on your mind lately?"))
-            elif mood == "angry":
-                chat_history.append(("bot", f"It's okay to feel angry, {session['name']}. Let's talk about it."))
-                chat_history.append(("bot", "If you don't mind sharing, what's been triggering these feelings today?"))
-            else:
-                chat_history.append(("bot", "I'm not sure I understood that. Could you try expressing how you feel again?"))
-                return render_template("index.html", chat_history=chat_history)
-            session["step"] = 3
-
-        elif session.get("step") == 3:
-            chat_history.append(("user", user_input))
-            mood = session.get("mood")
-            if mood == "happy":
-                chat_history.append(("bot", "Wow! That's amazing!"))
-            elif mood == "sad":
-                chat_history.append(("bot", "Ah, I can imagine how that must make you feel."))
-            elif mood == "angry":
-                chat_history.append(("bot", "That sounds incredibly frustrating. I can see why it's caused your mood to worsen."))
-            chat_history.append(("bot", "Thanks for chatting with me today! 😊"))
-            session.clear()
-
-        session["chat_history"] = chat_history
         return redirect(url_for("chat"))
 
-    return render_template("index.html", chat_history=session.get("chat_history", []))
+    # GET request with name in session, show chat with history
+    history = session.get("chat_history", [])
+    return render_template("index.html", name=session["name"], chat_history=history)
 
 if __name__ == "__main__":
     import os
