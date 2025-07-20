@@ -14,9 +14,65 @@ warnings.filterwarnings("ignore", category=RuntimeWarning)
 
 # Mood dataset
 moods = {
-    "happy": [ ... ],  # Copy your mood lists here
-    "sad": [ ... ],
-    "angry": [ ... ]
+    "happy": [
+        "I am feeling good today",
+        "I am well thank you",
+        "I'm good",
+        "I'm feeling happy",
+        "I'm so happy",
+        "I'm so excited",
+        "Today I am feeling happy",
+        "I'm feeling joyful",
+        "Things are going really well",
+        "I'm feeling optimistic today",
+        "I'm in a great mood!",
+        "Life is good right now",
+        "I'm quite cheerful",
+        "I feel content and peaceful",
+        "I'm full of energy today",
+        "I'm feeling positive",
+        "Everything feels right today"
+    ],
+
+    "sad": [
+        "I'm feeling down",
+        "Today hasn't been great",
+        "I'm not doing so well",
+        "I'm a bit sad",
+        "I feel really low today",
+        "I've been feeling blue",
+        "I'm upset",
+        "I'm having a hard day",
+        "I just feel empty",
+        "Things have been rough",
+        "I feel like crying",
+        "I'm emotionally drained",
+        "I feel hopeless",
+        "I'm feeling a little lost",
+        "My mood is really low",
+        "I'm feeling lonely",
+        "I'm not in the best headspace right now"
+    ],
+
+    "angry": [
+        "I'm really annoyed",
+        "I'm frustrated today",
+        "Things are making me angry",
+        "I'm feeling irritated",
+        "I'm mad right now",
+        "I'm seriously pissed off",
+        "I can't deal with this!",
+        "Everything is getting on my nerves",
+        "I'm so fed up",
+        "I'm losing my patience",
+        "People keep pushing my buttons",
+        "I'm just in a bad mood",
+        "I'm raging inside",
+        "I feel so tense and angry",
+        "This day has been infuriating",
+        "I'm seething right now",
+        "My temper is running thin"
+    ]
 }
 
 # Preprocessing
