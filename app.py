@@ -65,28 +65,31 @@ def mood_matching(user_input):
 
 @app.route("/", methods=["GET", "POST"])
 def chat():
+    if request.method == "GET":
+        # Clear session to forget any stored data
+        session.clear()
+
+    # Now the rest is basically the "first time" flow:
     if "name" not in session:
-        # User has not set their name yet
         if request.method == "POST":
             name = request.form.get("name", "").strip().capitalize()
             if name:
+                # Instead of storing in session, just handle in the current request cycle
+                # But to keep form handling simpler, we'll temporarily store name in session
                 session["name"] = name
-                session["chat_history"] = []  # store chat messages here
+                session["chat_history"] = []
                 return redirect(url_for("chat"))
-        # show name input form only
         return render_template("index.html", ask_name=True)
-    
-    # If here, user has a name stored
+
+    # If name in session (immediate POST after entering name)
     if request.method == "POST":
         message = request.form.get("message", "").strip()
-        if not message:
-            # No message entered, just reload
-            return redirect(url_for("chat"))
-        
-        # run mood matching and generate response
-        mood = mood_matching(message)
-        name = session["name"]
+        name = session.get("name")
 
+        if not message:
+            return redirect(url_for("chat"))
+
+        mood = mood_matching(message)
         if mood == "happy":
             response = f"I'm so glad to hear you're feeling happy today, {name}!"
         elif mood == "sad":
@@ -96,14 +99,13 @@ def chat():
         else:
             response = "I'm not sure I understand — could you try expressing how you feel again?"
 
-        # Append conversation to session chat history
         history = session.get("chat_history", [])
         history.append({"user": message, "bot": response})
         session["chat_history"] = history
 
         return redirect(url_for("chat"))
 
-    # GET request with name in session, show chat with history
+    # GET request with name in session (only happens right after POST name)
     history = session.get("chat_history", [])
     return render_template("index.html", name=session["name"], chat_history=history)
 
