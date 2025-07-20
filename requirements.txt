@@ -1,5 +1,5 @@
-flask
-nltk
+Flask
 scikit-learn
-textblob
-gunicorn
+nltk
+numpy
+scipy
