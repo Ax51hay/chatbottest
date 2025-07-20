@@ -73,25 +73,32 @@ def chat():
     name = None
     message = None
     response = None
+    prompt = "What's your name?"
+    step = 1
 
     if request.method == "POST":
-        name = request.form.get("name", "").strip().capitalize()
+        name = request.form.get("name", "").strip()
         message = request.form.get("message", "").strip()
 
         if name and not message:
-            response = f"Hi {name}, how are you feeling today?"
+            response = f"Hi {name.capitalize()}, how are you feeling today?"
+            step = 2
         elif name and message:
             mood = mood_matching(message)
             if mood == "happy":
-                response = f"I'm so glad to hear you're feeling happy today, {name}!"
+                response = f"I'm so glad to hear you're feeling happy today, {name.capitalize()}!"
             elif mood == "sad":
-                response = f"I'm sorry to hear you're feeling sad, {name}. Maybe I can help."
+                response = f"I'm sorry to hear you're feeling sad, {name.capitalize()}. Maybe I can help."
             elif mood == "angry":
-                response = f"It's okay to feel angry, {name}. Let's talk about it."
+                response = f"It's okay to feel angry, {name.capitalize()}. Let's talk about it."
             else:
                 response = "I'm not sure I understand — could you try expressing how you feel again?"
+            step = 3
+        else:
+            prompt = "What's your name?"
+            step = 1
 
-    return render_template("index.html", name=name, message=message, response=response)
+    return render_template("index.html", name=name, message=message, response=response, step=step)
 
 if __name__ == "__main__":
     import os
