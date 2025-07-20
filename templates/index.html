@@ -138,11 +138,20 @@
   <div class="chat-container">
     <div class="chat-header">Chatbot</div>
     <div class="chat-messages" id="chat-messages">
-      {% if ask_name %}
-        <div class="bot-message message">
-          Hi! What's your name?
-        </div>
-      {% endif %}
+      {% if step == 1 %}
+    <div class="bot-message message">
+        {{ prompt }}
+    </div>
+    {% elif step == 2 %}
+    <div class="bot-message message">
+        {{ response }}
+    </div>
+    {% elif step == 3 %}
+    <div class="bot-message message">
+        {{ response }}
+    </div>
+    {% endif %}
+
 
       {% if chat_history %}
         {% for chat in chat_history %}

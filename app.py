@@ -98,7 +98,14 @@ def chat():
             prompt = "What's your name?"
             step = 1
 
-    return render_template("index.html", name=name, message=message, response=response, step=step)
+    return render_template(
+    "index.html",
+    name=name,
+    message=message,
+    response=response,
+    step=step,
+    prompt=prompt
+)
 
 if __name__ == "__main__":
     import os
