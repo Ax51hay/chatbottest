@@ -1,26 +1,90 @@
-<!-- templates/index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Emotion Chatbot</title>
+  <meta charset="UTF-8">
+  <title>Chatbot</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    .chat-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      max-width: 600px;
+      margin: auto;
+      border: 1px solid #ccc;
+      background-color: #fff;
+    }
+
+    .chat-box {
+      flex: 1;
+      overflow-y: auto;
+      padding: 15px;
+    }
+
+    .message {
+      margin: 10px 0;
+      padding: 10px 15px;
+      border-radius: 20px;
+      max-width: 70%;
+    }
+
+    .bot {
+      background-color: #e0e0e0;
+      align-self: flex-start;
+    }
+
+    .user {
+      background-color: #0084ff;
+      color: white;
+      align-self: flex-end;
+    }
+
+    form {
+      display: flex;
+      border-top: 1px solid #ccc;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 0 20px;
+      background-color: #0084ff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #006fd6;
+    }
+  </style>
 </head>
 <body>
-    <h1>Emotion Chatbot</h1>
+  <div class="chat-container">
+    <div class="chat-box" id="chatBox">
+      {% for entry in chat_history %}
+        <div class="message {{ entry.role }}">{{ entry.text }}</div>
+      {% endfor %}
+    </div>
     <form method="post">
-        <label>Your Name:</label><br>
-        <input type="text" name="name" required><br><br>
-
-        <label>How are you feeling today?</label><br>
-        <textarea name="message" rows="4" cols="50" required></textarea><br><br>
-
-        <button type="submit">Send</button>
+      <input type="text" name="user_input" autocomplete="off" placeholder="Type your message..." required>
+      <button type="submit">Send</button>
     </form>
-
-    {% if response %}
-        <hr>
-        <p><strong>{{ name }}:</strong> {{ message }}</p>
-        <p><strong>Bot:</strong> {{ response }}</p>
-    {% endif %}
+  </div>
 </body>
 </html>
