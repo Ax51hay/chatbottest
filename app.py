@@ -117,6 +117,7 @@ def chat():
             session["step"] = 3
 
         elif session["step"] == 3 and message_input:
+            session["history"].append(("user", message_input))
             if mood == "happy":
                 bot_msg = "Wow! That's amazing!"
             elif mood == "sad":
