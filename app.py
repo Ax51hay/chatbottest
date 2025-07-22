@@ -79,7 +79,7 @@ def chat():
         session["step"] = 1
         session["name"] = ""
         bot_msg = "Hi! I am your emotional support guide, what is your name?"
-        session["history"].append(("user", name_input))
+        session["history"].append(("bot", bot_msg))
 
 
     if request.method == "POST":
