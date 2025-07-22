@@ -76,7 +76,7 @@ def chat():
     if request.method == "GET":
         session.clear()
         session["history"] = []
-        session["step"] = 1
+        session["step"] = 0
         session["name"] = ""
 
 
@@ -84,9 +84,16 @@ def chat():
         name_input = request.form.get("name", "").strip()
         message_input = request.form.get("message", "").strip()
 
+        if session["step"] == 0:
+            session["name"] = name_input
+            bot_msg = "Hi! I am your emotional support guide, what is your name?"
+            session["history"].append(("user", name_input))
+            session["history"].append(("bot", bot_msg))
+            session["step"] = 1
+
         if session["step"] == 1 and name_input:
             session["name"] = name_input
-            bot_msg = f"Hi {name_input.capitalize()}, how are you feeling today?"
+            bot_msg = f"Nice to meet you {name_input.capitalize()}, how are you feeling today?"
             session["history"].append(("user", name_input))
             session["history"].append(("bot", bot_msg))
             session["step"] = 2
