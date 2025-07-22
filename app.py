@@ -116,7 +116,7 @@ def chat():
             session["history"].append(("bot", bot_msg))
             session["step"] = 3
 
-        elif session["step"] == 2 and message_input:
+        elif session["step"] == 3 and message_input:
             if mood == "happy":
                 bot_msg = "Wow! That's amazing!"
             elif mood == "sad":
