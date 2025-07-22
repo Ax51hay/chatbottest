@@ -27,7 +27,7 @@ moods = {
         "I'm having a hard day", "I just feel empty", "Things have been rough",
         "I feel like crying", "I'm emotionally drained", "I feel hopeless",
         "I'm feeling a little lost", "My mood is really low", "I'm feeling lonely",
-        "I'm not in the best headspace right now"
+        "I'm not in the best headspace right now", "I'm feeling quite sad today"
     ],
     "angry": [
         "I'm really annoyed", "I'm frustrated today", "Things are making me angry",
@@ -126,7 +126,28 @@ def chat():
                 bot_msg = "That sounds incredibly frustrating, I can see why it's caused your mood to worsen."
 
             session["history"].append(("bot", bot_msg))
-            session["step"] = 3
+
+            if mood == "happy":
+                bot_msg = "It is important to maintain a happy mood for as long as you can, have you got any plans for the rest of today that will keep you in good spirits?"
+            elif mood == "sad":
+                bot_msg = "Why don't we try to brighten your mood? Have you got anything planned today that will lift your spirits?"
+            elif mood == "angry":
+                bot_msg = "Maybe it would be good to take your mind off of things by doing something else, have you got anything planned for the rest of today?"
+
+            session["history"].append(("bot", bot_msg))
+            session["step"] = 4
+
+        elif session["step"] == 4 and message_input:
+            session["history"].append(("user", message_input))
+            if mood == "happy":
+                bot_msg = "Wow! That's amazing!"
+            elif mood == "sad":
+                bot_msg = "Ah, I can imagine how that must make you feel"
+            elif mood == "angry":
+                bot_msg = "That sounds incredibly frustrating, I can see why it's caused your mood to worsen."
+
+            session["history"].append(("bot", bot_msg))
+            session["step"] = 5
 
     return render_template("index.html", history=session["history"], step=session["step"], name=session["name"])
 
